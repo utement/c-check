@@ -9,5 +9,21 @@ class DiffParser:
             raise Exception("Diff must be provided")
         self.diff = diff
 
+    def validate_data(self):
+        return_value = False
+        diff = self.diff.split("\n")
+
+        if type(diff) is list and len(diff) > 2:
+            return_value = True
+
+        if diff[0][0:4] == "diff":
+            return_value = True
+        else:
+            return_value = False
+
+        return return_value
+
     def parse(self):
-        pass
+        if self.diff == "":
+            return False
+        return True
