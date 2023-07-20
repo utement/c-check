@@ -1,11 +1,15 @@
 def run():
     a = "Dodam tekst"
     a = "Dodam tekst1.1"
-    a = "Dodam tekst2"
+    a = "Dodam tekst2.2"
+    a = "Dodam tekst3.3"
+    a = "Dodam tekst3.4"
+    a = "Dodam tekst3.5"
     a = "Dodam tekst4"
     a = "Dodam tekst5"
     a = "Dodam tekst6"
-    a = "Dodam tekst6.1"
+    a = "Dodam tekst7"
+    a = "Dodam tekst8"
     a = "Dodam tekst9"
 
 
