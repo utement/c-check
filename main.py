@@ -2,6 +2,7 @@ import json
 
 import configargparse
 from configargparse import RawTextHelpFormatter
+import subprocess
 
 
 def parse_args():
@@ -12,7 +13,7 @@ def parse_args():
         default_config_files=default_config_files,
     )
     parser.add_argument("--verbose", action="store_true", help="Verbose")
-    parser.add_argument("-f", "--files", type=str, nargs="+", required=True, help="Files")
+    parser.add_argument("-f", "--files", type=str, nargs="+", default=None, help="Files")
     parser.add_argument("-j", "--coverage-json", required=True, help="Boot path")
     parser.add_argument("-p", "--required-percentage", type=int, default=100, help="Required percentage")
     parser.add_argument("-b", "--branch", type=str, nargs="+", required=True, help="PR Branch")
@@ -26,6 +27,24 @@ def parse_coverage_file(args):
     with open(args.coverage_json) as coverage_json_file:
         coverage_data = json.load(coverage_json_file)
     return coverage_data
+
+
+def get_changed_files(curr_branch, branch):
+    try:
+        result = subprocess.check_output(["git", "diff", "--name-only", f"{branch}..{curr_branch}"])
+        files_list = result.decode("utf-8").strip().split("\n")
+        return files_list
+    except subprocess.CalledProcessError:
+        return False
+
+
+def get_curr_branch():
+    try:
+        result = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+        current_branch = result.decode("utf-8").strip()
+        return current_branch
+    except subprocess.CalledProcessError:
+        return False
 
 
 def main():
@@ -59,4 +78,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # kar nekaj
+    main()  # Main
