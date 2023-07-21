@@ -9,8 +9,6 @@ def run():
     a = "Dodam tekst6.1"
     a = "Dodam tekst6.2"
     a = "Dodam tekst6.3"
-    a = "Dodam tekst7"
-    a = "Dodam tekst8"
     a = "Dodam tekst9"
     a = "Dodam tekst10"
     a = "Dodam tekst11"
