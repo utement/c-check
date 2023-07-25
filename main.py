@@ -55,7 +55,8 @@ def get_changed_files(curr_branch, branch, path):
             [
                 "git",
                 # "-C",
-                # path, "diff",
+                # path,
+                "diff",
                 "--name-only",
                 f"{branch}..{curr_branch}",
             ]
