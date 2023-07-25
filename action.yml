@@ -25,6 +25,6 @@ runs:
       shell: bash
     - run: pip3 install -r icc/requirements.txt
       shell: bash
-    - run: python3 icc/main.py -b $GITHUB_BASE_REF!
+    - run: python3 icc/main.py -b ${{ github.base_ref }}
       shell: bash
 
