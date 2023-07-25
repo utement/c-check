@@ -53,6 +53,7 @@ def get_changed_files(curr_branch, branch, path):
     try:
         result = subprocess.check_output(["git", "-C", path, "diff", "--name-only", f"{branch}..{curr_branch}"])
         files_list = result.decode("utf-8").strip().split("\n")
+        logging.debug(f"{len(files_list)} files changed in diff.")
         return files_list
     except subprocess.CalledProcessError as e:
         logging.debug(e)
