@@ -34,7 +34,7 @@ def parse_coverage_file(args):
 
 def get_file_diff(curr_branch, branch, path, file):
     try:
-        result = subprocess.check_output(["git", "-C", path, "diff", f"{branch}..{curr_branch}", file])
+        result = subprocess.check_output(["git", "-C", path, "diff", f"{branch}..{curr_branch}", "--", file])
         files_list = result.decode("utf-8").strip()
         return files_list
     except subprocess.CalledProcessError as e:
