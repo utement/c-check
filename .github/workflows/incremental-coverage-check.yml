@@ -10,6 +10,8 @@ jobs:
         with:
           python-version: "3.7"
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: utement/c-check@wip
         with:
           coverage_json: test/resources/coverage.json
