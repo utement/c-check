@@ -2,9 +2,12 @@ name: "Incremental coverage check"
 description: "Incremental coverage check"
 author: "Velis"
 inputs:
-  myInput:
-    description: "Input to use"
-    default: "world"
+  coverage_json:
+    description: "Coverage json"
+    default: ""
+  branch:
+    description: "Branch for PR"
+    default: "${{ github.base_ref }}"
 outputs:
   myOutput:
     description: "Output from the action"
