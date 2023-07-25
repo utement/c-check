@@ -14,9 +14,12 @@ runs:
     - uses: actions/checkout@v2
       with:
         ref: wip
+        path: icc
     - run: echo Hello.
       shell: bash
     - run: ls -lah
       shell: bash
     - run: pwd
+      shell: bash
+    - run: ls -lah icc
       shell: bash
