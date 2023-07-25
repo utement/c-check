@@ -12,18 +12,10 @@ runs:
       with:
         ref: wip
         path: icc
-    - run: echo Hello.
-      shell: bash
-    - run: ls -lah
-      shell: bash
-    - run: pwd
-      shell: bash
-    - run: ls -lah icc
-      shell: bash
     - run: ls -lah test/resources
       shell: bash
     - run: pip3 install -r icc/requirements.txt
       shell: bash
-    - run: python3 icc/main.py -w ${{ github.workspace }} -c ${{ github.head_ref }}  -b ${{ github.base_ref }} -j ${{ github.workspace }}${{ inputs.coverage_json }}
+    - run: python3 icc/main.py -w ${{ github.workspace }} -c ${{ github.head_ref }}  -b ${{ github.base_ref }} -j ${{ github.workspace }}/${{ inputs.coverage_json }}
       shell: bash
 
