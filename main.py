@@ -54,11 +54,13 @@ def get_changed_files(curr_branch, branch, path):
         result = subprocess.check_output(
             [
                 "git",
-                # "-C",
-                # path,
+                "-C",
+                path,
                 "diff",
                 "--name-only",
-                f"{branch}..{curr_branch}",
+                # f"{branch}..{curr_branch}",
+                branch,
+                curr_branch,
             ]
         )
         files_list = result.decode("utf-8").strip().split("\n")
