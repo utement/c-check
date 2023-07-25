@@ -30,8 +30,11 @@ def parse_args():
 
 
 def parse_coverage_file(args):
+    logging.debug("Start parsing coverage file.")
+    coverage_data = {}
     with open(args.coverage_json) as coverage_json_file:
         coverage_data = json.load(coverage_json_file)
+        logging.debug(f"{len(coverage_data)} files in coverage.json file.")
     return coverage_data
 
 
