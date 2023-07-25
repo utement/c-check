@@ -4,10 +4,7 @@ author: "Velis"
 inputs:
   coverage_json:
     description: "Coverage json"
-    default: ""
-outputs:
-  myOutput:
-    description: "Output from the action"
+    required: true
 runs:
   using: "composite"
   steps:
@@ -27,6 +24,6 @@ runs:
       shell: bash
     - run: pip3 install -r icc/requirements.txt
       shell: bash
-    - run: python3 icc/main.py -w ${{ github.workspace }} -b ${{ github.base_ref }} -j ${{ github.workspace }}/test/resources/coverage.json
+    - run: python3 icc/main.py -w ${{ github.workspace }} -c ${{ github.head_ref }}  -b ${{ github.base_ref }} -j ${{ github.workspace }}${{ inputs.coverage_json }}
       shell: bash
 
