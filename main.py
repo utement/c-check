@@ -6,6 +6,9 @@ from configargparse import RawTextHelpFormatter
 import subprocess
 from diff_parser import DiffParser
 
+import logging
+import logging.handlers
+
 
 def parse_args():
     default_config_files = []
@@ -14,9 +17,9 @@ def parse_args():
         formatter_class=RawTextHelpFormatter,
         default_config_files=default_config_files,
     )
-    parser.add_argument("--verbose", action="store_true", help="Verbose")
+    parser.add_argument("-l", "--logging-level", type=str, default="INFO", help="Logging level INFO/DEBUG")
     parser.add_argument("-f", "--files", type=str, nargs="+", default=None, help="Files")
-    parser.add_argument("-j", "--coverage-json", required=True, help="Boot path")
+    parser.add_argument("-j", "--coverage-json", type=str, required=True, help="Boot path")
     parser.add_argument("-p", "--required-percentage", type=int, default=100, help="Required percentage")
     parser.add_argument("-b", "--branch", type=str, required=True, help="PR Branch")
     parser.add_argument("-c", "--current-branch", type=str, default=None, required=False, help="Current Branch")
@@ -64,6 +67,8 @@ def main():
         success = True
         args = parse_args()
 
+        logging.basicConfig(level=getattr(logging, args.logging_level))
+
         coverage_data = parse_coverage_file(args)
         curr_branch = get_curr_branch(args.working_dir)
 
@@ -71,6 +76,7 @@ def main():
             args.files = get_changed_files(curr_branch, args.branch, args.working_dir)
 
         for file in args.files:
+            logging.debug(f"Working on file: {file}")
             file_data = coverage_data.get(os.path.join(args.working_dir, file), None)
             if file_data:
                 diff = get_file_diff(curr_branch, args.branch, args.working_dir, os.path.join(args.working_dir, file))

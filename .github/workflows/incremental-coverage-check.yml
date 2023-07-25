@@ -13,6 +13,7 @@ jobs:
       - uses: utement/c-check@wip
         with:
           coverage_json: test/resources/coverage.json
+          logging_level: DEBUG
       - name: ls
         run: |
           pwd
