@@ -23,6 +23,8 @@ runs:
       shell: bash
     - run: ls -lah icc
       shell: bash
+    - run: pip3 install -r icc/requirements.txt
+        shell: bash
     - run: python3 icc/main.py
       shell: bash
 
