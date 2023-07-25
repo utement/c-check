@@ -17,7 +17,7 @@ runs:
         path: icc
     - run: pip3 install -r icc/requirements.txt
       shell: bash
-    - run: git branch
+    - run: git fetch main
       shell: bash
     - run: python3 icc/main.py -w ${{ github.workspace }} -c ${{ github.head_ref }}  -b ${{ github.base_ref }} -j ${{ github.workspace }}/${{ inputs.coverage_json }} -l ${{ inputs.logging_level }}
       shell: bash
