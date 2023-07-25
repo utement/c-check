@@ -12,11 +12,12 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: utement/c-check@wip
-        with:
-          coverage_json: test/resources/coverage.json
-          logging_level: DEBUG
       - name: ls
         run: |
           pwd
           ls -lah
+      - uses: utement/c-check@wip
+        with:
+          coverage_json: test/resources/coverage.json
+          logging_level: DEBUG
+
