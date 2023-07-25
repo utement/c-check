@@ -1,5 +1,5 @@
-name: Lint
-on: [push, pull_request]
+name: Coverage check
+on: [pull_request]
 jobs:
   lint:
     name: Lint
