@@ -73,16 +73,20 @@ def main():
         logging.basicConfig(level=getattr(logging, args.logging_level))
 
         coverage_data = parse_coverage_file(args)
-        curr_branch = get_curr_branch(args.working_dir)
+
+        if not args.current_branch:
+            args.current_branch = get_curr_branch(args.working_dir)
 
         if args.files == None:
-            args.files = get_changed_files(curr_branch, args.branch, args.working_dir)
+            args.files = get_changed_files(args.current_branch, args.branch, args.working_dir)
 
         for file in args.files:
             logging.debug(f"Working on file: {file}")
             file_data = coverage_data.get(os.path.join(args.working_dir, file), None)
             if file_data:
-                diff = get_file_diff(curr_branch, args.branch, args.working_dir, os.path.join(args.working_dir, file))
+                diff = get_file_diff(
+                    args.current_branch, args.branch, args.working_dir, os.path.join(args.working_dir, file)
+                )
                 parser = DiffParser(diff)
                 a = parser.parse()
                 s = file_data["s"]
