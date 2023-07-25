@@ -51,7 +51,15 @@ def get_file_diff(curr_branch, branch, path, file):
 def get_changed_files(curr_branch, branch, path):
     logging.debug("Get changed files from diff.")
     try:
-        result = subprocess.check_output(["git", "-C", path, "diff", "--name-only", f"{branch}..{curr_branch}"])
+        result = subprocess.check_output(
+            [
+                "git",
+                # "-C",
+                # path, "diff",
+                "--name-only",
+                f"{branch}..{curr_branch}",
+            ]
+        )
         files_list = result.decode("utf-8").strip().split("\n")
         logging.debug(f"{len(files_list)} files changed in diff.")
         return files_list
