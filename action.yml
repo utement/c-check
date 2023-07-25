@@ -10,10 +10,10 @@ outputs:
     description: "Output from the action"
 runs:
   using: "composite"
-    steps:
-      - run: echo Hello.
-        shell: bash
-      - run: ls -lah
-        shell: bash
-      - run: pwd
-        shell: bash
+  steps:
+    - run: echo Hello.
+      shell: bash
+    - run: ls -lah
+      shell: bash
+    - run: pwd
+      shell: bash
