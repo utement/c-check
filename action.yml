@@ -1,0 +1,13 @@
+name: "Incremental coverage check"
+description: "Incremental coverage check"
+author: "Velis"
+inputs:
+  myInput:
+    description: "Input to use"
+    default: "world"
+outputs:
+  myOutput:
+    description: "Output from the action"
+runs:
+  using: "docker"
+  image: "Dockerfile"

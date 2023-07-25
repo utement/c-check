@@ -1,14 +1,16 @@
 import json
+import os.path
 
 import configargparse
 from configargparse import RawTextHelpFormatter
 import subprocess
+from diff_parser import DiffParser
 
 
 def parse_args():
     default_config_files = []
     parser = configargparse.ArgParser(
-        description="TODO",
+        description="Incremental coverage check",
         formatter_class=RawTextHelpFormatter,
         default_config_files=default_config_files,
     )
@@ -16,8 +18,9 @@ def parse_args():
     parser.add_argument("-f", "--files", type=str, nargs="+", default=None, help="Files")
     parser.add_argument("-j", "--coverage-json", required=True, help="Boot path")
     parser.add_argument("-p", "--required-percentage", type=int, default=100, help="Required percentage")
-    parser.add_argument("-b", "--branch", type=str, nargs="+", required=True, help="PR Branch")
-    parser.add_argument("-w", "--working-dir", type=str, nargs="+", required=True, help="Working dir")
+    parser.add_argument("-b", "--branch", type=str, required=True, help="PR Branch")
+    parser.add_argument("-c", "--current-branch", type=str, default=None, required=False, help="Current Branch")
+    parser.add_argument("-w", "--working-dir", type=str, required=True, help="Working dir")
 
     args, unknown = parser.parse_known_args()
     return args
@@ -29,18 +32,27 @@ def parse_coverage_file(args):
     return coverage_data
 
 
-def get_changed_files(curr_branch, branch):
+def get_file_diff(curr_branch, branch, path, file):
     try:
-        result = subprocess.check_output(["git", "diff", "--name-only", f"{branch}..{curr_branch}"])
-        files_list = result.decode("utf-8").strip().split("\n")
+        result = subprocess.check_output(["git", "-C", path, "diff", f"{branch}..{curr_branch}", file])
+        files_list = result.decode("utf-8").strip()
         return files_list
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as e:
         return False
 
 
-def get_curr_branch():
+def get_changed_files(curr_branch, branch, path):
     try:
-        result = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+        result = subprocess.check_output(["git", "-C", path, "diff", "--name-only", f"{branch}..{curr_branch}"])
+        files_list = result.decode("utf-8").strip().split("\n")
+        return files_list
+    except subprocess.CalledProcessError as e:
+        return False
+
+
+def get_curr_branch(path):
+    try:
+        result = subprocess.check_output(["git", "-C", path, "rev-parse", "--abbrev-ref", "HEAD"])
         current_branch = result.decode("utf-8").strip()
         return current_branch
     except subprocess.CalledProcessError:
@@ -53,22 +65,30 @@ def main():
         args = parse_args()
 
         coverage_data = parse_coverage_file(args)
+        curr_branch = get_curr_branch(args.working_dir)
+
+        if args.files == None:
+            args.files = get_changed_files(curr_branch, args.branch, args.working_dir)
 
         for file in args.files:
-            file_data = coverage_data[file]
-            s = file_data["s"]
-            count = 0
-            percentage = 0
-            for value in s.values():
-                if value == 1:
-                    count += 1
+            file_data = coverage_data.get(os.path.join(args.working_dir, file), None)
+            if file_data:
+                diff = get_file_diff(curr_branch, args.branch, args.working_dir, os.path.join(args.working_dir, file))
+                parser = DiffParser(diff)
+                a = parser.parse()
+                s = file_data["s"]
+                count = 0
+                percentage = 0
+                for line_nr, value in s.items():
+                    if int(line_nr) + 1 in a and value > 0:
+                        count += 1
 
-            percentage = round((count / len(s)) * 100)
+                percentage = round((count / len(a)) * 100)
 
-            print(f"{file} Lines: {len(s)} score: {count}, percentage: {percentage}")
+                print(f"{file} Lines: {len(a)} score: {count}, percentage: {percentage}")
 
-            if percentage < args.required_percentage:
-                success = False
+                if percentage < args.required_percentage:
+                    success = False
 
         if not success:
             raise SystemExit("Failed")
@@ -78,5 +98,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # kar nekaj
-    main()  # Main
+    main()
