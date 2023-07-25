@@ -23,6 +23,8 @@ runs:
       shell: bash
     - run: ls -lah icc
       shell: bash
+    - run: ls -lah icc/test/resources
+      shell: bash
     - run: pip3 install -r icc/requirements.txt
       shell: bash
     - run: python3 icc/main.py -w ${{ github.workspace }} -b ${{ github.base_ref }} -j ${{ github.workspace }}/test/resources/coverage.json
