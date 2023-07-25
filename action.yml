@@ -9,5 +9,11 @@ outputs:
   myOutput:
     description: "Output from the action"
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: "composite"
+    steps:
+      - run: echo Hello.
+        shell: bash
+      - run: ls -lah
+        shell: bash
+      - run: pwd
+        shell: bash
