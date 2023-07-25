@@ -5,12 +5,6 @@ inputs:
   coverage_json:
     description: "Coverage json"
     required: true
-  branch:
-    description: "Branch"
-    required: true
-  current_branch:
-    description: "Current branch"
-    required: true
   logging_level:
     description: "Loging level"
     required: INFO
@@ -26,6 +20,6 @@ runs:
       shell: bash
     - run: git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
       shell: bash
-    - run: python3 icc/main.py -w ${{ github.workspace }} -c ${{ inputs.current_branch }}  -b ${{ inputs.branch }} -j ${{ github.workspace }}/${{ inputs.coverage_json }} -l ${{ inputs.logging_level }}
+    - run: python3 icc/main.py -w ${{ github.workspace }} -c ${{ github.head_ref }}  -b ${{ github.base_ref }} -j ${{ github.workspace }}/${{ inputs.coverage_json }} -l ${{ inputs.logging_level }}
       shell: bash
 
