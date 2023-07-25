@@ -58,7 +58,8 @@ def get_changed_files(curr_branch, branch, path):
                 path,
                 "diff",
                 "--name-only",
-                f"{branch}..{curr_branch}",
+                # f"{branch}..{curr_branch}",
+                f"{branch}..HEAD",
             ]
         )
         files_list = result.decode("utf-8").strip().split("\n")
