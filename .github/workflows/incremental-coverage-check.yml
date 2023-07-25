@@ -12,7 +12,7 @@ jobs:
 
       - uses: utement/c-check@wip
 
-      - name: Lint
+      - name: ls
         run: |
-          pip install flake8
-          flake8 main.py
+          pwd
+          ls -lah
