@@ -2,7 +2,7 @@ name: Coverage check
 on: [pull_request]
 jobs:
   lint:
-    name: Lint
+    name: Code coverage
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python 3.7
